@@ -1,0 +1,15 @@
+{
+  "describe": "博客配置信息",
+  "blogTypes": [
+    {
+      "type": "frontEnd",
+      "name": "前端",
+      "describe": "前端技术笔记"
+    },
+    {
+      "type": "essay",
+      "name": "随笔",
+      "describe": "个人随笔"
+    }
+  ]
+}

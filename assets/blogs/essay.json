@@ -1,0 +1,12 @@
+{
+  "type": "essay",
+  "name": "随笔",
+  "describe": "个人随笔",
+  "article": [
+    {
+      "title": "测试Markdown",
+      "id": "20200511001",
+      "mdFileUrl": "assets/blogs/20200511001.md"
+    }
+  ]
+}
