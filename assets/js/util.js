@@ -584,4 +584,32 @@
 
 	};
 
+	/*得到当前地址hash去掉后面?参数*/
+	$.getHash = function(anchor){
+		anchor = anchor || location.hash;
+		if (anchor && anchor != "#") {
+			var url = anchor.substr(2);
+			var temp = url.indexOf("?");
+			if (temp != -1) {
+				url = url.substring(0, temp);
+			}
+			return url;
+		}
+		return false;
+	};
+
+	/*得到地址栏中参数,如window.GETQUERYPARAM("id")*/
+	$.getQueryParam = function(name,hash){
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		if(!hash){
+			hash = window.location.href;
+		}
+		var index = hash.indexOf("?");
+		var hash = hash.substr(index + 1);
+		var r = hash.match(reg);
+		if (r != null) {
+			return unescape(decodeURI(r[2]));
+		}
+		return null;
+	};
 })(jQuery);

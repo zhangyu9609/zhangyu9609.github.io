@@ -184,18 +184,17 @@
 			<script src="assets/js/main.js"></script>
 			<script src="assets/plugs/markdown-it/markdown-it.js"></script>
 			<script type="text/javascript">
-				var md = window.markdownit();
-				var content = "";
-				$.ajaxSettings.async = false;
-				$.getJSON("assets/blogs/frontEnd.json", (result) => {
-					var mdFileUrl = result.article[0].mdFileUrl;
-					$.get(mdFileUrl).then((response) => {
-						content = response;
+				$(() => {
+					var id = $.getQueryParam('id');
+					var md = window.markdownit();
+					$.ajaxSettings.async = false;
+					$.get("assets/blogs/"+id+".md").then((response) => {
+						var content = response;
 						var result = md.render(content);
 						$(".markdown-body").html(result);
 					});
+					$.ajaxSettings.async = true;
 				});
-				$.ajaxSettings.async = true;
 			</script>
 
 

@@ -52,7 +52,7 @@
 
 								<!-- Blog -->
 								<section>
-									<div class="row">
+									<div class="row" id="blogList">
 										<div class="col-12 col-12-small">
 											<section class="box">
 												<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
@@ -230,6 +230,45 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script type="text/javascript">
+				$(() => {
+					var articles = [];
+					$.ajaxSettings.async = false;
+					$.getJSON("assets/blogs/frontEnd.json", (result) => {
+						articles = result.articles;
+					});
+					$.ajaxSettings.async = true;
+					var html = "";
+					articles.forEach((article,index) => {
+						var num = index%2 == 0 ? 8 : 9;
+						var days = getDaysBetween(article.createDate);
+						html += '<div class="col-12 col-12-small"><section class="box">\n';
+						html += '<a href="#" class="image featured"><img src="images/pic0'+num+'.jpg" alt="" /></a>\n';
+						html += '<header><h3>'+article.title+'</h3><p>'+(days == 0 ? "Posted today" : "Posted "+days+" days ago")+'</p></header>\n';
+						html += '<p>xxxx.</p>\n';
+						html += '<footer><ul class="actions">\n';
+						html += '<li><a href="no-sidebar.html?id='+article.id+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
+						html += '</ul></footer>\n';
+						html += '</section></div>\n';
+					});
+					$("#blogList").html(html);
+				});
 
+				/**
+				 * 距当前日期计算
+				 */
+				function getDaysBetween(date){
+					var date1Str = date.split("-");//将日期字符串分隔为数组,数组元素分别为年.月.日
+					//根据年 . 月 . 日的值创建Date对象
+					var date1Obj = new Date(date1Str[0],(date1Str[1]-1),date1Str[2]);
+					var t1 = date1Obj.getTime();
+					var t2 = (new Date()).getTime();
+					var dateTime = 1000*60*60*24; //每一天的毫秒数
+					var minusDays = Math.floor(((t2-t1)/dateTime));//计算出两个日期的天数差
+					var days = Math.abs(minusDays);//取绝对值
+					return days;
+				}
+			</script>
 	</body>
+
 </html>
