@@ -145,7 +145,7 @@
 										<li>
 											<h3>Address</h3>
 											<p>
-												Guangzhou, <br />Guangdong Province, <br />China
+												Guangzhou, Guangdong Province
 											</p>
 										</li>
 										<li>
@@ -185,7 +185,7 @@
 			<script src="assets/plugs/markdown-it/markdown-it.js"></script>
 			<script type="text/javascript">
 				$(() => {
-					var id = $.getQueryParam('id');
+					var id = $.getQueryParam('id') || "2020-03-20-001";
 					var md = window.markdownit();
 					$.ajaxSettings.async = false;
 					$.get("assets/blogs/"+id+".md").then((response) => {
