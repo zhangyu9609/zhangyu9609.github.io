@@ -4,9 +4,16 @@
   "describe": "前端技术笔记",
   "article": [
     {
-      "title": "测试Markdown",
-      "id": "20200511001",
-      "mdFileUrl": "assets/blogs/20200511001.md"
+      "title": "解决jquery get请求缓存问题",
+      "id": "2020-03-20-001",
+      "creatDate": "2020-03-20",
+      "mdFileUrl": "assets/blogs/2020-03-20-001.md"
+    },
+    {
+      "title": "echart浏览器兼容性问题",
+      "id": "2020-05-11-001",
+      "creatDate": "2020-05-11",
+      "mdFileUrl": "assets/blogs/2020-05-11-001.md"
     }
   ]
 }

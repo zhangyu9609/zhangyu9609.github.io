@@ -187,7 +187,7 @@
 				var md = window.markdownit();
 				var content = "";
 				$.ajaxSettings.async = false;
-				$.getJSON("assets/blogs/frontEnd.json",function (result) {
+				$.getJSON("assets/blogs/frontEnd.json", (result) => {
 					var mdFileUrl = result.article[0].mdFileUrl;
 					$.get(mdFileUrl).then((response) => {
 						content = response;
