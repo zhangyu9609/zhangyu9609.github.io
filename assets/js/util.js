@@ -584,7 +584,11 @@
 
 	};
 
-	/*得到当前地址hash去掉后面?参数*/
+	/**
+	 * 得到当前地址hash去掉后面?参数
+	 * @param anchor
+	 * @returns {string|boolean}
+	 */
 	$.getHash = function(anchor){
 		anchor = anchor || location.hash;
 		if (anchor && anchor != "#") {
@@ -598,7 +602,12 @@
 		return false;
 	};
 
-	/*得到地址栏中参数,如window.GETQUERYPARAM("id")*/
+	/**
+	 * 得到地址栏中参数,如window.GETQUERYPARAM("id")
+	 * @param name
+	 * @param hash
+	 * @returns {string|null}
+	 */
 	$.getQueryParam = function(name,hash){
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 		if(!hash){
@@ -612,4 +621,6 @@
 		}
 		return null;
 	};
+
+
 })(jQuery);
