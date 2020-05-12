@@ -202,7 +202,7 @@
 					}
 					if (openWay == "md"){
 						var md = window.markdownit();
-						$.get("assets/blogs/"+id+".md").then((response) => {
+						$.get(url).then((response) => {
 							var content = response;
 							var result = md.render(content);
 							$(".markdown-body").html(result);
