@@ -53,9 +53,9 @@
 								<!-- Blog -->
 									<section>
 										<header class="major">
-											<h2>The Blog</h2>
+											<h2>The Blog Types</h2>
 										</header>
-										<div class="row">
+										<div class="row" id="blogTypes">
 											<div class="col-6 col-12-small">
 												<section class="box">
 													<a href="#" class="image featured"><img src="images/pic08.jpg" alt="" /></a>
@@ -235,6 +235,38 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
-
+			<script type="text/javascript">
+				$(() => {
+					var blogTypes = [];
+					$.ajaxSettings.async = false;
+					$.getJSON("assets/blogs/blogsConfig.json", (result) => {
+						blogTypes = result.blogTypes;
+					});
+					$.ajaxSettings.async = true;
+					var html = "";
+					blogTypes.forEach((blogType,index) => {
+						var blogNum = 0;
+						var articles = [];
+						$.ajaxSettings.async = false;
+						$.getJSON("assets/blogs/"+blogType.type+".json", (result) => {
+							articles = result.articles;
+							blogNum = articles.length;
+						});
+						$.ajaxSettings.async = true;
+						var num = Math.round(Math.random()*7) + 2;
+						var marginTop = Math.round(Math.random()*10);
+						html += '<div class="col-6 col-12-small"><section class="box">\n';
+						html += '<a href="#" class="image featured" style="height: 150px;overflow: hidden"><img src="images/pic0'+num+'.jpg" alt="" style="margin-top: -'+marginTop+'%;"/></a>\n';
+						html += '<header><h3>'+blogType.name+'</h3><p>'+blogNum+'篇文章</p></header>\n';
+						html += '<p>'+blogType.describe+'</p>\n';
+						html += '<footer><ul class="actions">\n';
+						html += '<li><a href="left-sidebar.html?type='+blogType.type+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
+						html += '<li><a href="#" class="button alt icon solid fa-comment">33 comments</a></li>\n';
+						html += '</ul></footer>\n';
+						html += '</section></div>\n';
+					});
+					$("#blogTypes").html(html);
+				});
+			</script>
 	</body>
 </html>
