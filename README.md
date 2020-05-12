@@ -1,1 +1,1 @@
-![Image text](/images/index.png)
+![Image](/images/index.png)

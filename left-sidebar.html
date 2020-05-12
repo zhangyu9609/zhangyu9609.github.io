@@ -240,11 +240,11 @@
 					$.ajaxSettings.async = true;
 					var html = "";
 					articles.forEach((article,index) => {
-						var num = index%2 == 0 ? 8 : 9;
-						var marginTop = $('body').width()/(580/270) > 192 ? Math.random()*10 : 0;
+						var num = Math.round(Math.random()*8) + 1;
+						var marginTop = Math.round(Math.random()*10);
 						var days = getDaysBetween(article.createDate);
 						html += '<div class="col-12 col-12-small"><section class="box">\n';
-						html += '<a href="#" class="image featured" style="max-height: 192px;overflow: hidden"><img src="images/pic0'+num+'.jpg" alt="" style="margin-top: -'+marginTop+'%;"/></a>\n';
+						html += '<a href="#" class="image featured" style="height: 100px;overflow: hidden"><img src="images/pic0'+num+'.jpg" alt="" style="margin-top: -'+marginTop+'%;"/></a>\n';
 						html += '<header><h3>'+article.title+'</h3><p>'+(days == 0 ? "Posted today" : "Posted "+days+" days ago")+'</p></header>\n';
 						html += '<p>xxxx.</p>\n';
 						html += '<footer><ul class="actions">\n';

@@ -4,16 +4,20 @@
   "describe": "前端技术笔记",
   "articles": [
     {
-      "title": "解决jquery get请求缓存问题",
-      "id": "2020-03-20-001",
-      "createDate": "2020-03-20",
-      "mdFileUrl": "assets/blogs/2020-03-20-001.md"
-    },
-    {
       "title": "echart浏览器兼容性问题",
       "id": "2020-05-11-001",
       "createDate": "2020-05-11",
       "mdFileUrl": "assets/blogs/2020-05-11-001.md"
+    },{
+      "title": "解决jquery get请求缓存问题",
+      "id": "2020-03-20-001",
+      "createDate": "2020-03-20",
+      "mdFileUrl": "assets/blogs/2020-03-20-001.md"
+    },{
+      "title": "throw语句抛出异常",
+      "id": "2019-10-12-001",
+      "createDate": "2019-10-12-001",
+      "mdFileUrl": "assets/blogs/2019-10-12-001.md"
     }
   ]
 }
