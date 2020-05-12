@@ -22,7 +22,13 @@
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Home</a></li>
-								<li class="current"><a href="left-sidebar.html">Articles</a></li>
+								<li class="current">
+									<a href="#">Articles</a>
+									<ul>
+										<li><a href="left-sidebar.html?type=frontEnd">frontEnd</a></li>
+										<li><a href="left-sidebar.html?type=essay">essay</a></li>
+									</ul>
+								</li>
 								<li><a href="right-sidebar.html">Me</a></li>
 							</ul>
 						</nav>
@@ -234,7 +240,8 @@
 				$(() => {
 					var articles = [];
 					$.ajaxSettings.async = false;
-					$.getJSON("assets/blogs/frontEnd.json", (result) => {
+					var type = $.getQueryParam('type') || "frontEnd";
+					$.getJSON("assets/blogs/"+type+".json", (result) => {
 						articles = result.articles;
 					});
 					$.ajaxSettings.async = true;
@@ -248,7 +255,7 @@
 						html += '<header><h3>'+article.title+'</h3><p>'+(days == 0 ? "Posted today" : "Posted "+days+" days ago")+'</p></header>\n';
 						html += '<p>xxxx.</p>\n';
 						html += '<footer><ul class="actions">\n';
-						html += '<li><a href="no-sidebar.html?id='+article.id+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
+						html += '<li><a href="no-sidebar.html?url='+article.fileUrl+'&openWay='+article.openWay+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
 						html += '</ul></footer>\n';
 						html += '</section></div>\n';
 					});

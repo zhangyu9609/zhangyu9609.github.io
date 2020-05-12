@@ -4,9 +4,11 @@
   "describe": "个人随笔",
   "articles": [
     {
-      "title": "测试Markdown",
-      "id": "20200511001",
-      "mdFileUrl": "assets/blogs/20200511001.md"
+      "title": "支付宝公众号，绝对是公众届的一股清流",
+      "id": "2017-01-23-001",
+      "createDate": "2017-01-23",
+      "openWay": "iframe",
+      "fileUrl": "assets/wechat/2017-01-23-001.html"
     }
   ]
 }

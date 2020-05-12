@@ -23,7 +23,13 @@
 						<nav id="nav">
 							<ul>
 								<li><a href="index.html">Home</a></li>
-								<li class="current"><a href="left-sidebar.html">Articles</a></li>
+								<li class="current">
+									<a href="#">Articles</a>
+									<ul>
+										<li><a href="left-sidebar.html?type=frontEnd">frontEnd</a></li>
+										<li><a href="left-sidebar.html?type=essay">essay</a></li>
+									</ul>
+								</li>
 								<li><a href="right-sidebar.html">Me</a></li>
 							</ul>
 						</nav>
@@ -37,7 +43,9 @@
 						<!-- Content -->
 							<article class="box post">
 								<a href="#" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
-								<div class="markdown-body"></div>
+								<div class="markdown-body">
+
+								</div>
 							</article>
 
 					</div>
@@ -185,15 +193,24 @@
 			<script src="assets/plugs/markdown-it/markdown-it.js"></script>
 			<script type="text/javascript">
 				$(() => {
-					var id = $.getQueryParam('id') || "2020-03-20-001";
-					var md = window.markdownit();
-					$.ajaxSettings.async = false;
-					$.get("assets/blogs/"+id+".md").then((response) => {
-						var content = response;
-						var result = md.render(content);
-						$(".markdown-body").html(result);
-					});
-					$.ajaxSettings.async = true;
+					var url = $.getQueryParam('url') || "";
+					var openWay = $.getQueryParam('openWay') || "";
+					if (!(url&&openWay)) {
+						alert("无法获取文章，将返回主页");
+						window.location.replace("index.html");
+						return;
+					}
+					if (openWay == "md"){
+						var md = window.markdownit();
+						$.get("assets/blogs/"+id+".md").then((response) => {
+							var content = response;
+							var result = md.render(content);
+							$(".markdown-body").html(result);
+						});
+					} else if (openWay == "iframe") {
+						var iframe = '<iframe name="myframe" src="'+url+'" width="100%" onload="this.height=myframe.document.body.scrollHeight" scrolling="no"></iframe>';
+						$(".markdown-body").html(iframe);
+					}
 				});
 			</script>
 
