@@ -22,26 +22,38 @@ window.addEventListener('hashchange',function(){
 var router = (hash)=>{
     // 回到顶部
     $('html,body').animate({scrollTop:0},500);
+    $(".current").removeClass("current");
+    if (hash == "articles/article") {
+        $("#articles").addClass("current");
+    }else {
+        $("#"+hash).addClass("current");
+    }
+
     // 使用switch判断hash的值是多少
     $.ajaxSetup({async : false});
     switch(hash){
         case 'index' :
             $("#main").load("indexMain.html");
+            $("#banner").show();
             index();
             break;
         case 'articles' :
             $("#main").load("articleListMain.html");
+            $("#banner").hide();
             articleList();
             break;
         case 'articles/article' :
             $("#main").load("articleMain.html");
+            $("#banner").hide();
             article();
             break;
         case 'me' :
             $("#main").load("meMain.html");
+            $("#banner").hide();
             break;
         default :
             $("#main").load("indexMain.html");
+            $("#banner").show();
             index();
     }
     $.ajaxSetup({async : true});
