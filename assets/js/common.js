@@ -11,7 +11,7 @@ $(() => {
  * hash监听
  */
 window.addEventListener('hashchange',function(){
-    /* 将hash的值拿到（去掉参数） */
+    // 将hash的值拿到（去掉参数）
     var hash = $.getHash();
     router(hash);
 });
@@ -20,7 +20,9 @@ window.addEventListener('hashchange',function(){
  * 根据hash改变路由
  */
 var router = (hash)=>{
-    /* 使用switch判断hash的值是多少 */
+    // 回到顶部
+    $('html,body').animate({scrollTop:0},500);
+    // 使用switch判断hash的值是多少
     $.ajaxSetup({async : false});
     switch(hash){
         case 'index' :
@@ -43,8 +45,6 @@ var router = (hash)=>{
             index();
     }
     $.ajaxSetup({async : true});
-    // 回到顶部
-    $('html,body').animate({scrollTop:0},500);
 };
 
 /**
