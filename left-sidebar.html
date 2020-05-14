@@ -209,6 +209,10 @@
 			<script src="assets/js/main.js"></script>
 			<script type="text/javascript">
 				$(() => {
+					articleList();
+				});
+
+				var articleList = () =>{
 					var articles = [];
 					$.ajaxSettings.async = false;
 					var type = $.getQueryParam('type') || "frontEnd";
@@ -231,12 +235,12 @@
 						html += '</section></div>\n';
 					});
 					$("#blogList").html(html);
-				});
+				};
 
 				/**
 				 * 距当前日期计算
 				 */
-				function getDaysBetween(date){
+				var getDaysBetween = (date) =>{
 					var date1Str = date.split("-");//将日期字符串分隔为数组,数组元素分别为年.月.日
 					//根据年 . 月 . 日的值创建Date对象
 					var date1Obj = new Date(date1Str[0],(date1Str[1]-1),date1Str[2]);

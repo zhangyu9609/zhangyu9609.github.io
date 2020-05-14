@@ -592,7 +592,7 @@
 	$.getHash = function(anchor){
 		anchor = anchor || location.hash;
 		if (anchor && anchor != "#") {
-			var url = anchor.substr(2);
+			var url = anchor.substr(1);
 			var temp = url.indexOf("?");
 			if (temp != -1) {
 				url = url.substring(0, temp);
@@ -611,7 +611,7 @@
 	$.getQueryParam = function(name,hash){
 		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
 		if(!hash){
-			hash = window.location.href;
+			hash = window.location.hash;
 		}
 		var index = hash.indexOf("?");
 		var hash = hash.substr(index + 1);

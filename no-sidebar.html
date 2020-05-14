@@ -193,6 +193,10 @@
 			<script src="assets/plugs/markdown-it/markdown-it.js"></script>
 			<script type="text/javascript">
 				$(() => {
+					article();
+				});
+
+				var article = () => {
 					var url = $.getQueryParam('url') || "";
 					var openWay = $.getQueryParam('openWay') || "";
 					if (!(url&&openWay)) {
@@ -211,7 +215,7 @@
 						var iframe = '<iframe name="myframe" src="'+url+'" width="100%" onload="this.height=myframe.document.body.scrollHeight" scrolling="no"></iframe>';
 						$(".markdown-body").html(iframe);
 					}
-				});
+				}
 			</script>
 
 
