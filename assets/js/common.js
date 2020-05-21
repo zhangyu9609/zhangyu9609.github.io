@@ -2,7 +2,7 @@
 $(() => {
     // 首页加载
     $.ajaxSetup({async : false});
-    $("#footer").load("footer.html");
+    $("#footer").load("html/footer.html");
     router($.getHash());
     $.ajaxSetup({async : true});
 });
@@ -33,26 +33,27 @@ var router = (hash)=>{
     $.ajaxSetup({async : false});
     switch(hash){
         case 'index' :
-            $("#main").load("indexMain.html");
+            $("#main").load("html/indexMain.html");
             $("#banner").show();
             index();
             break;
         case 'articles' :
-            $("#main").load("articleListMain.html");
+            $("#main").load("html/articleListMain.html");
             $("#banner").hide();
             articleList();
             break;
         case 'articles/article' :
-            $("#main").load("articleMain.html");
+            $("#main").load("html/articleMain.html");
             $("#banner").hide();
             article();
             break;
         case 'me' :
-            $("#main").load("meMain.html");
+            $("#main").load("html/meMain.html");
             $("#banner").hide();
             break;
         default :
-            $("#main").load("indexMain.html");
+            $("#main").load("html/indexMain.html");
+            $("#index").addClass("current");
             $("#banner").show();
             index();
     }
@@ -111,6 +112,8 @@ var articleList = () =>{
     $.ajaxSettings.async = false;
     var type = $.getQueryParam('type') || "frontEnd";
     $.getJSON("assets/blogs/"+type+".json", (result) => {
+        $("#blogType").text(result.type);
+        $("#blogDescribe").text(result.describe);
         articles = result.articles;
     });
     $.ajaxSettings.async = true;
