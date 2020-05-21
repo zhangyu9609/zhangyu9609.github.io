@@ -97,7 +97,7 @@ var index = () =>{
         html += '<p>'+blogType.describe+'</p>\n';
         html += '<footer><ul class="actions">\n';
         html += '<li><a href="#articles?type='+blogType.type+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
-        html += '<li><a href="javascript:void(0);" class="button alt icon solid fa-comment">33 comments</a></li>\n';
+        // html += '<li><a href="javascript:void(0);" class="button alt icon solid fa-comment">33 comments</a></li>\n';
         html += '</ul></footer>\n';
         html += '</section></div>\n';
     });
@@ -112,7 +112,7 @@ var articleList = () =>{
     $.ajaxSettings.async = false;
     var type = $.getQueryParam('type') || "frontEnd";
     $.getJSON("assets/blogs/"+type+".json", (result) => {
-        $("#blogType").text(result.type);
+        $("#blogType").text("BlogType - "+result.type);
         $("#blogDescribe").text(result.describe);
         articles = result.articles;
     });
