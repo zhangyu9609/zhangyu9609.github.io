@@ -4,6 +4,9 @@
 			display: none;
 		}
 	}
+	.searchBtn{
+		padding: 0.15rem 0.75rem;
+	}
 </style>
 <!--文章列表内容-->
 <div class="container">
@@ -16,10 +19,11 @@
 					<header>
 						<h3 id="blogType">Blog Types</h3>
 					</header>
-					<p id="blogDescribe">Lorem ipsum dolor sit amet sit veroeros sed amet blandit consequat veroeros lorem blandit  adipiscing et feugiat phasellus tempus dolore ipsum lorem dolore.</p>
-					<footer>
-						<a href="#index" class="button alt">返回首页</a>
-					</footer>
+					<p id="blogDescribe"></p>
+					<input type="text" id="searchName" placeholder="请输入文章标题">
+<!--					<footer>-->
+						<a href="javascript:void(0);" class="button alt searchBtn" onclick="searchArticle()">search</a>
+<!--					</footer>-->
 				</section>
 
 		</div>

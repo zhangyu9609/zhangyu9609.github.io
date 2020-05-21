@@ -106,15 +106,19 @@ var index = () =>{
 
 /**
  * 文章列表页数据加载
+ * @param name
  */
-var articleList = () =>{
+var articleList = (name) =>{
     var articles = [];
     $.ajaxSettings.async = false;
     var type = $.getQueryParam('type') || "frontEnd";
     $.getJSON("assets/blogs/"+type+".json", (result) => {
         $("#blogType").text("BlogType - "+result.type);
         $("#blogDescribe").text(result.describe);
-        articles = result.articles;
+        articles = result.articles || [];
+        if (name){
+            articles = articles.filter(item => (item.title.toUpperCase()).indexOf(name.toUpperCase()) != -1 );
+        }
     });
     $.ajaxSettings.async = true;
     var html = "";
@@ -125,13 +129,21 @@ var articleList = () =>{
         html += '<div class="col-12 col-12-small"><section class="box">\n';
         html += '<a href="javascript:void(0);" class="image featured" style="height: 100px;overflow: hidden"><img src="images/pic0'+num+'.jpg" alt="" style="margin-top: -'+marginTop+'%;"/></a>\n';
         html += '<header><h3>'+article.title+'</h3><p>'+(days == 0 ? "Posted today" : "Posted "+days+" days ago")+'</p></header>\n';
-        html += '<p>xxxx.</p>\n';
+        html += '<p>'+(article.title).slice(0,5)+'...</p>\n';
         html += '<footer><ul class="actions">\n';
         html += '<li><a href="#articles/article?url='+article.fileUrl+'&openWay='+article.openWay+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
         html += '</ul></footer>\n';
         html += '</section></div>\n';
     });
     $("#blogList").html(html);
+};
+
+/**
+ * 文章搜索
+ */
+var searchArticle = () => {
+    var name = $("#searchName").val();
+    articleList(name);
 };
 
 /**
