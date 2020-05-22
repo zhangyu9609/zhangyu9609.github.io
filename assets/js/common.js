@@ -50,6 +50,7 @@ var router = (hash)=>{
         case 'me' :
             $("#main").load("html/meMain.html");
             $("#banner").hide();
+            testMe();
             break;
         default :
             $("#main").load("html/indexMain.html");
@@ -59,15 +60,6 @@ var router = (hash)=>{
     }
     $.ajaxSetup({async : true});
 };
-
-
-// 监听屏幕滚动条
-// $(window).scroll(function(event){
-//
-//     var oTop = document.body.scrollTop==0?document.documentElement.scrollTop:document.body.scrollTop;
-//     window.location.hash;
-//     debugger
-// });
 
 /**
  * 首页数据加载
@@ -183,4 +175,16 @@ var getDaysBetween = (date) =>{
     var minusDays = Math.floor(((t2-t1)/dateTime));//计算出两个日期的天数差
     var days = Math.abs(minusDays);//取绝对值
     return days;
+};
+
+/**
+ * testMe
+ */
+var testMe = () =>{
+    var md = window.markdownit();
+    $.get("assets/blogs/resume.md").then((response) => {
+        var content = response;
+        var result = md.render(content);
+        $(".markdown-body").html(result);
+    });
 };
