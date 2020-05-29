@@ -123,7 +123,7 @@ var latestBlog = (name) =>{
     for (var i = 0; i < 3; i++){
         var date = articles[i].createDate.split("-");
         html += '<li><span class="date">'+date[0]+' <strong>'+date[1]+'.'+date[2]+'</strong></span>\n';
-        html += '<h3><a href="javascript:void(0);">'+articles[i].title+'</a></h3>';
+        html += '<h3><a href="#articles/article?url='+articles[i].fileUrl+'&openWay='+articles[i].openWay+'" >'+articles[i].title+'</a></h3>';
         html += '<p>'+(articles[i].describe).slice(0,30)+'...</p>\n';
         html += '</li>\n';
     }
