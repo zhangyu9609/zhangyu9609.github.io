@@ -3,6 +3,7 @@ $(() => {
     // 首页加载
     $.ajaxSetup({async : false});
     $("#footer").load("html/footer.html");
+    latestBlog();
     router($.getHash());
     $.ajaxSetup({async : true});
 });
@@ -97,6 +98,39 @@ var index = () =>{
 };
 
 /**
+ * 最新博客底部显示
+ * @param name
+ */
+var latestBlog = (name) =>{
+    var blogTypes = [];
+    var articles = [];
+    $.ajaxSettings.async = false;
+    $.getJSON("assets/blogs/blogsConfig.json", (data) => {
+        blogTypes = data.blogTypes || [];
+        blogTypes.forEach((blogType,index) => {
+            $.getJSON("assets/blogs/"+blogType.type+".json", (result) => {
+                articles = articles.length == 0 ? (result.articles || []) : articles.concat((result.articles || []));
+                articles = articles.sort((a,b)=>{
+                    var i = new Date(a.createDate).getTime();
+                    var j = new Date(b.createDate).getTime();
+                    return j - i;
+                })
+            });
+        })
+    });
+    $.ajaxSettings.async = true;
+    var html = "";
+    for (var i = 0; i < 3; i++){
+        var date = articles[i].createDate.split("-");
+        html += '<li><span class="date">'+date[0]+' <strong>'+date[1]+'.'+date[2]+'</strong></span>\n';
+        html += '<h3><a href="javascript:void(0);">'+articles[i].title+'</a></h3>';
+        html += '<p>'+(articles[i].describe).slice(0,30)+'...</p>\n';
+        html += '</li>\n';
+    }
+    $("#latestBlog").html(html);
+};
+
+/**
  * 文章列表页数据加载
  * @param name
  */
@@ -111,6 +145,11 @@ var articleList = (name) =>{
         if (name){
             articles = articles.filter(item => (item.title.toUpperCase()).indexOf(name.toUpperCase()) != -1 );
         }
+        articles = articles.sort((a,b)=>{
+            var i = new Date(a.createDate).getTime();
+            var j = new Date(b.createDate).getTime();
+            return j - i;
+        })
     });
     $.ajaxSettings.async = true;
     var html = "";
@@ -121,7 +160,7 @@ var articleList = (name) =>{
         html += '<div class="col-12 col-12-small"><section class="box">\n';
         html += '<a href="javascript:void(0);" class="image featured" style="height: 100px;overflow: hidden"><img src="images/pic0'+num+'.jpg" alt="" style="margin-top: -'+marginTop+'%;"/></a>\n';
         html += '<header><h3>'+article.title+'</h3><p>'+(days == 0 ? "Posted today" : "Posted "+days+" days ago")+'</p></header>\n';
-        html += '<p>'+(article.title).slice(0,5)+'...</p>\n';
+        html += '<p>'+(article.describe).slice(0,30)+'...</p>\n';
         html += '<footer><ul class="actions">\n';
         html += '<li><a href="#articles/article?url='+article.fileUrl+'&openWay='+article.openWay+'" class="button icon solid fa-file-alt">Continue Reading</a></li>\n';
         html += '</ul></footer>\n';

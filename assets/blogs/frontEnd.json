@@ -4,47 +4,61 @@
   "describe": "前端技术笔记",
   "articles": [
     {
-      "title": "Deno应用",
+      "title": "HTML5 Canvas：绘制图形",
+      "id": "2020-05-29-003",
+      "createDate": "2020-05-29",
+      "openWay": "md",
+      "fileUrl": "assets/blogs/2020-05-29-003.md",
+      "describe": "HTML5 Canvas元素本身是一个HTML元素，用于在Canvas上工作的API是javascript API"
+    },{
+      "title": "Deno",
       "id": "2020-05-28-001",
       "createDate": "2020-05-28",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2020-05-28-001.md"
+      "fileUrl": "assets/blogs/2020-05-28-001.md",
+      "describe": "Deno作为没有依赖性的单个可执行文件提供。您可以使用下面的安装程序进行安装，也可以从发行页面下载发行二进制文件"
     },{
       "title": "后端文件流前端处理下载",
       "id": "2020-05-14-001",
       "createDate": "2020-05-14",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2020-05-14-001.md"
+      "fileUrl": "assets/blogs/2020-05-14-001.md",
+      "describe": "后端返回文件流，前端如何处理并且下载"
     },{
       "title": "echart浏览器兼容性问题",
       "id": "2020-05-11-001",
       "createDate": "2020-05-11",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2020-05-11-001.md"
+      "fileUrl": "assets/blogs/2020-05-11-001.md",
+      "describe": "IE10以上能打开echart,9及9以下兼容性错误"
     },{
       "title": "解决jquery get请求缓存问题",
       "id": "2020-03-20-001",
       "createDate": "2020-03-20",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2020-03-20-001.md"
+      "fileUrl": "assets/blogs/2020-03-20-001.md",
+      "describe": "在ie浏览器系列下，`$.get()`方法在url地址固定时，会缓存返回结果，导致不可预料的问题。但在火狐下，则不会缓存"
     },{
-      "title": "ES X 新特性",
+      "title": "ES 7 新特性",
       "id": "2020-03-18-001",
       "createDate": "2020-03-18",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2020-03-18-001.md"
+      "fileUrl": "assets/blogs/2020-03-18-001.md",
+      "describe": "ES 7 新特性Array.prototype.includes、指数函数的中缀表示法"
     },{
       "title": "replace多个参数替换",
       "id": "2019-11-12-001",
-      "createDate": "2019-11-12-001",
+      "createDate": "2019-11-12",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2019-11-12-001.md"
+      "fileUrl": "assets/blogs/2019-11-12-001.md",
+      "describe": "将一个复杂的字符串转换为标准JSON字符串格式"
     },{
       "title": "throw语句抛出异常",
       "id": "2019-10-12-001",
-      "createDate": "2019-10-12-001",
+      "createDate": "2019-10-12",
       "openWay": "md",
-      "fileUrl": "assets/blogs/2019-10-12-001.md"
+      "fileUrl": "assets/blogs/2019-10-12-001.md",
+      "describe": "throw语句用来抛出一个用户自定义的异常"
     }
   ]
 }
