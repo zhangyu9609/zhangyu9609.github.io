@@ -1,11 +1,12 @@
 
 $(() => {
     // 首页加载
-    $.ajaxSetup({async : false});
-    $("#footer").load("html/footer.html");
-    latestBlog();
+    $('#footer').load('html/footer.html',function(responseTxt,statusTxt,xhr){
+        if(statusTxt=='success'){
+            latestBlog();
+        }
+    });
     router($.getHash());
-    $.ajaxSetup({async : true});
 });
 
 /**
@@ -22,44 +23,56 @@ window.addEventListener('hashchange',function(){
  */
 var router = (hash)=>{
     // 回到顶部
-    $('html,body').animate({scrollTop:0},500);
+    $('html,body').animate({scrollTop:0},0);
     $(".current").removeClass("current");
     if (hash == "articles/article") {
         $("#articles").addClass("current");
     }else {
         $("#"+hash).addClass("current");
     }
-
     // 使用switch判断hash的值是多少
-    $.ajaxSetup({async : false});
     switch(hash){
         case 'index' :
-            $("#main").load("html/indexMain.html");
-            $("#banner").show();
-            index();
+            $('#main').load('html/indexMain.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#banner").show();
+                    index();
+                }
+            });
             break;
         case 'articles' :
-            $("#main").load("html/articleListMain.html");
-            $("#banner").hide();
-            articleList();
+            $('#main').load('html/articleListMain.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#banner").hide();
+                    articleList();
+                }
+            });
             break;
         case 'articles/article' :
-            $("#main").load("html/articleMain.html");
-            $("#banner").hide();
-            article();
+            $('#main').load('html/articleMain.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#banner").hide();
+                    article();
+                }
+            });
             break;
         case 'me' :
-            $("#main").load("html/meMain.html");
-            $("#banner").hide();
-            testMe();
+            $('#main').load('html/meMain.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#banner").hide();
+                    testMe();
+                }
+            });
             break;
         default :
-            $("#main").load("html/indexMain.html");
-            $("#index").addClass("current");
-            $("#banner").show();
-            index();
+            $('#main').load('html/indexMain.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#index").addClass("current");
+                    $("#banner").show();
+                    index();
+                }
+            });
     }
-    $.ajaxSetup({async : true});
 };
 
 /**
