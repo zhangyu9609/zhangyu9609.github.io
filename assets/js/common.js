@@ -1,11 +1,11 @@
 
 $(() => {
     // 首页加载
-    // $.ajaxSetup({async : false});
+    $.ajaxSetup({async : false});
     $("#footer").load("html/footer.html");
     latestBlog();
     router($.getHash());
-    // $.ajaxSetup({async : true});
+    $.ajaxSetup({async : true});
 });
 
 /**
