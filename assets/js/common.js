@@ -64,6 +64,13 @@ var router = (hash)=>{
                 }
             });
             break;
+        case 'canvas' :
+            $('#main').load('html/canvas.html',function(responseTxt,statusTxt,xhr){
+                if(statusTxt=='success'){
+                    $("#banner").hide();
+                }
+            });
+            break;
         default :
             $('#main').load('html/indexMain.html',function(responseTxt,statusTxt,xhr){
                 if(statusTxt=='success'){
