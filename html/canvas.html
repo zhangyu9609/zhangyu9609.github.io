@@ -1,0 +1,389 @@
+<style>
+    canvas {
+        display: block;
+        margin: 0 auto;
+        border: 1px solid #222;
+    }
+
+    input {
+        display: block;
+        margin: 20px auto;
+        width: 800px;
+    }
+</style>
+<div id="app">
+    <canvas id="my-canvas"></canvas>
+    <input type="range" value="1.0" min="0.5" max="3.0" step="0.1"/>
+    <canvas id="watermark-canvas" style="display: none;"></canvas>
+    <canvas id="off-canvas" style="display: none;"></canvas>
+</div>
+<div style="text-align: center">
+    <button class="filter-btn button icon solid fa-image" id="gaussBlur">高斯模糊</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="negative">负片</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="decolor">去色</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="printmaking">中国版画</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="monochrome">单色</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="emboss">浮雕</button>&nbsp;
+</div>
+<script type="text/javascript">
+    var isMouseDown = false, scale = 1.0;
+    var canvas = document.querySelector("#my-canvas");
+    var watermarkCanvas = document.querySelector("#watermark-canvas");
+    var offCanvas = document.querySelector("#off-canvas");
+    var filterBtn = document.querySelector(".filter-btn");
+    var slider = document.querySelector("input");
+    // var scale = slider.value;
+    var ctx = canvas.getContext("2d");
+    // 离屏 canvas 的 Context对象
+    var offCtx = offCanvas.getContext("2d");
+    var watermarkCtx = watermarkCanvas.getContext("2d");
+    /* 给第二个canvas获取的Context对象添加水印 */
+    watermarkCanvas.width = 300;
+    watermarkCanvas.height = 100;
+    watermarkCtx.font = "bold 20px Arial";
+    watermarkCtx.lineWidth = "1";
+    watermarkCtx.fillStyle = "rgba(255 , 255 , 255, 0.5)";
+    watermarkCtx.fillText(" saltfisher.cn ", 50, 50);
+
+    var img = new Image();
+    img.src = "./images/pic09.jpg"; /* 加载图片后执行操作 */
+    img.onload = function () {
+        canvas.width = img.width;
+        canvas.height = img.height;
+        drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
+        offCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    };
+    // 监听input标签的mousemove事件 // 注意：mousemove实时监听值的变化，内存消耗较大
+    slider.onmousemove = function () {
+        scale = slider.value;
+        drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
+    };
+
+    // 鼠标按下
+    canvas.onmousedown = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        var point = windowToCanvas(event.clientX, event.clientY);
+        // 获取鼠标相对于 canvas 标签的坐标
+        isMouseDown = true;
+        drawCanvasWithMagnifier(true, point);
+        // 绘制在离屏canvas上绘制放大后的图像
+    };
+    // 鼠标移动
+    canvas.onmousemove = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        if (isMouseDown === true) {
+            var point = windowToCanvas(event.clientX, event.clientY);
+            drawCanvasWithMagnifier(true, point);
+        }
+    };
+    // 鼠标松开
+    canvas.onmouseup = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        isMouseDown = false;
+        drawCanvasWithMagnifier(false);
+        // 不绘制离屏放大镜
+    };
+    // 鼠标移出canvas标签
+    canvas.onmouseout = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        isMouseDown = false;
+        drawCanvasWithMagnifier(false);
+        // 不绘制离屏放大镜
+    };
+
+    // 滤镜
+    $(document).on("click",".filter-btn",function (event) {
+        var id = $(this).attr("id");
+        var imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        switch(id){
+            case 'gaussBlur' :
+                imgData = gaussBlur(imgData);
+                break;
+            case 'negative' :
+                imgData = negative(imgData);
+                break;
+            case 'decolor' :
+                imgData = decolor(imgData);
+                break;
+            case 'printmaking' :
+                imgData = printmaking(imgData);
+                break;
+            case 'monochrome' :
+                imgData = monochrome(imgData);
+                break;
+            case 'emboss' :
+                imgData = emboss(imgData);
+                break;
+        }
+        ctx.putImageData(imgData, 0, 0); // 重写图像数据
+    });
+
+    /**
+     *
+     * @param {Object} canvas 画布对象
+     * @param {Object} ctx
+     * @param {Object} img
+     * @param {Number} scale 缩放比例
+     * @param {Object} watermark 水印对象
+     */
+    function drawImageByScale(canvas, ctx, img, scale, watermark) {
+        // 图像按照比例进行缩放
+        var width = img.width * scale, height = img.height * scale;
+        // (dx, dy): 画布上绘制img的起始坐标
+        var dx = canvas.width / 2 - width / 2, dy = canvas.height / 2 - height / 2;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // No1 清空画布
+        ctx.drawImage(img, dx, dy, width, height);
+        // No2 重新绘制图像
+        if (watermark) {
+            // No3 判断是否有水印: 有, 绘制水印
+            ctx.drawImage(watermark, canvas.width - watermark.width, canvas.height - watermark.height);
+        }
+    }
+
+    /**
+     * 返回鼠标相对于canvas左上角的坐标
+     * @param {Number} x 鼠标的屏幕坐标x
+     * @param {Number} y 鼠标的屏幕坐标y
+     */
+    function windowToCanvas(x, y) {
+        var bbox = canvas.getBoundingClientRect();
+        // bbox中存储的是canvas相对于屏幕的坐标
+        return {x: x - bbox.x, y: y - bbox.y};
+    }
+
+    function drawCanvasWithMagnifier(isShow, point) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // 清空画布
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        // 在画布上绘制图像
+        /* 利用离屏，绘制放大镜 */
+        if (isShow) {
+            var {x, y} = point;
+            var mr = 50;
+            // 正方形放大镜边长
+            // (sx, sy): 待放大图像的开始坐标
+            var sx = x - mr / 2, sy = y - mr / 2; // (dx, dy):
+            // 已放大图像的开始坐标
+            var dx = x - mr, dy = y - mr;
+            // 将offCanvas上的(sx,sy)开始的长宽均为mr的正方形区域
+            // 放大到canvas上的(dx,dy)开始的长宽均为 2 * mr 的正方形可视区域
+            // 由此实现放大效果
+            ctx.drawImage(offCanvas, sx, sy, mr, mr, dx, dy, 2 * mr, 2 * mr);
+        }
+    }
+
+    /**
+     * 高斯模糊效果
+     * @param imgData
+     * @returns {*}
+     */
+    function gaussBlur(imgData) {
+        var pixes = imgData.data;
+        var width = imgData.width;
+        var height = imgData.height;
+        var gaussMatrix = [],
+            gaussSum = 0,
+            x, y,
+            r, g, b, a,
+            i, j, k, len;
+
+        var radius = 30;
+        var sigma = 5;
+
+        a = 1 / (Math.sqrt(2 * Math.PI) * sigma);
+        b = -1 / (2 * sigma * sigma);
+        //生成高斯矩阵
+        for (i = 0, x = -radius; x <= radius; x++, i++){
+            g = a * Math.exp(b * x * x);
+            gaussMatrix[i] = g;
+            gaussSum += g;
+
+        }
+        //归一化, 保证高斯矩阵的值在[0,1]之间
+        for (i = 0, len = gaussMatrix.length; i < len; i++) {
+            gaussMatrix[i] /= gaussSum;
+        }
+        //x 方向一维高斯运算
+        for (y = 0; y < height; y++) {
+            for (x = 0; x < width; x++) {
+                r = g = b = a = 0;
+                gaussSum = 0;
+                for(j = -radius; j <= radius; j++){
+                    k = x + j;
+                    if(k >= 0 && k < width){//确保 k 没超出 x 的范围
+                        //r,g,b,a 四个一组
+                        i = (y * width + k) * 4;
+                        r += pixes[i] * gaussMatrix[j + radius];
+                        g += pixes[i + 1] * gaussMatrix[j + radius];
+                        b += pixes[i + 2] * gaussMatrix[j + radius];
+                        // a += pixes[i + 3] * gaussMatrix[j];
+                        gaussSum += gaussMatrix[j + radius];
+                    }
+                }
+                i = (y * width + x) * 4;
+                // 除以 gaussSum 是为了消除处于边缘的像素, 高斯运算不足的问题
+                pixes[i] = r / gaussSum;
+                pixes[i + 1] = g / gaussSum;
+                pixes[i + 2] = b / gaussSum;
+                // pixes[i + 3] = a ;
+            }
+        }
+        //y 方向一维高斯运算
+        for (x = 0; x < width; x++) {
+            for (y = 0; y < height; y++) {
+                r = g = b = a = 0;
+                gaussSum = 0;
+                for(j = -radius; j <= radius; j++){
+                    k = y + j;
+                    if(k >= 0 && k < height){//确保 k 没超出 y 的范围
+                        i = (k * width + x) * 4;
+                        r += pixes[i] * gaussMatrix[j + radius];
+                        g += pixes[i + 1] * gaussMatrix[j + radius];
+                        b += pixes[i + 2] * gaussMatrix[j + radius];
+                        // a += pixes[i + 3] * gaussMatrix[j];
+                        gaussSum += gaussMatrix[j + radius];
+                    }
+                }
+                i = (y * width + x) * 4;
+                pixes[i] = r / gaussSum;
+                pixes[i + 1] = g / gaussSum;
+                pixes[i + 2] = b / gaussSum;
+            }
+        }
+        return imgData;
+    }
+
+    /**
+     * 负片效果
+     * @param imgData
+     * @returns {*}
+     */
+    function negative(imgData) {
+        for (var i = 0; i < imgData.data.length / 4; ++i) {
+            var red = imgData.data[i * 4],
+                green = imgData.data[i * 4 + 1],
+                blue = imgData.data[i * 4 + 2];
+            var gray = 0.3 * red + 0.59 * green + 0.11 * blue; // 计算gray
+            // 刷新RGB，注意：
+            // imgData.data[i * 4 + 3]存放的是alpha，不需要改动
+
+            // 负片效果
+            imgData.data[i * 4] = 255 - red;
+            imgData.data[i * 4 + 1] = 255 - green;
+            imgData.data[i * 4 + 2] = 255 - blue;
+        }
+        return imgData;
+    }
+
+    /**
+     * 去色效果
+     * @param imgData
+     * @returns {*}
+     */
+    function decolor(imgData) {
+        for (var i = 0; i < imgData.data.length / 4; ++i) {
+            var red = imgData.data[i * 4],
+                green = imgData.data[i * 4 + 1],
+                blue = imgData.data[i * 4 + 2];
+            var gray = 0.3 * red + 0.59 * green + 0.11 * blue; // 计算gray
+            // 刷新RGB，注意：
+            // imgData.data[i * 4 + 3]存放的是alpha，不需要改动
+
+            // 去色效果
+            imgData.data[i * 4] = gray;
+            imgData.data[i * 4 + 1] = gray;
+            imgData.data[i * 4 + 2] = gray;
+        }
+        return imgData;
+    }
+
+    /**
+     * 中国版画效果
+     * @param imgData
+     * @returns {*}
+     */
+    function printmaking(imgData) {
+        for (var i = 0; i < imgData.data.length / 4; ++i) {
+            var red = imgData.data[i * 4],
+                green = imgData.data[i * 4 + 1],
+                blue = imgData.data[i * 4 + 2];
+            var gray = 0.3 * red + 0.59 * green + 0.11 * blue; // 计算gray
+            // 刷新RGB，注意：
+            // imgData.data[i * 4 + 3]存放的是alpha，不需要改动
+
+            // 中国版画效果
+            var new_black;
+            if (gray > 126) {
+                new_black = 255;
+            } else {
+                new_black = 0;
+            }
+            imgData.data[i * 4] = new_black;
+            imgData.data[i * 4 + 1] = new_black;
+            imgData.data[i * 4 + 2] = new_black;
+        }
+        return imgData;
+    }
+
+    /**
+     * 单色效果
+     * @param imgData
+     * @returns {*}
+     */
+    function monochrome(imgData) {
+        for (var i = 0; i < imgData.data.length / 4; ++i) {
+            var red = imgData.data[i * 4],
+                green = imgData.data[i * 4 + 1],
+                blue = imgData.data[i * 4 + 2];
+            var gray = 0.3 * red + 0.59 * green + 0.11 * blue; // 计算gray
+            // 刷新RGB，注意：
+            // imgData.data[i * 4 + 3]存放的是alpha，不需要改动
+
+            // 单色效果
+            imgData.data[i * 4 + 1] = 0;
+            imgData.data[i * 4 + 2] = 0;
+        }
+        return imgData;
+    }
+
+
+    /**
+     * 浮雕效果
+     * @param imgData
+     * @returns {*}
+     */
+    function emboss(imgData) {
+        var tempCanvasData = imgData;
+        for ( var x = 0; x < imgData.width-1; x++)
+        {
+            for ( var y = 0; y < imgData.height-1; y++)
+            {
+
+                // Index of the pixel in the array
+                var idx = (x + y * tempCanvasData.width) * 4;
+                var bidx = ((x-1) + y * tempCanvasData.width) * 4;
+                var aidx = ((x+1) + y * tempCanvasData.width) * 4;
+
+                // calculate new RGB value
+                var nr = tempCanvasData.data[aidx + 0] - tempCanvasData.data[bidx + 0] + 128;
+                var ng = tempCanvasData.data[aidx + 1] - tempCanvasData.data[bidx + 1] + 128;
+                var nb = tempCanvasData.data[aidx + 2] - tempCanvasData.data[bidx + 2] + 128;
+                nr = (nr < 0) ? 0 : ((nr >255) ? 255 : nr);
+                ng = (ng < 0) ? 0 : ((ng >255) ? 255 : ng);
+                nb = (nb < 0) ? 0 : ((nb >255) ? 255 : nb);
+
+                // assign new pixel value
+                imgData.data[idx + 0] = nr; // Red channel
+                imgData.data[idx + 1] = ng; // Green channel
+                imgData.data[idx + 2] = nb; // Blue channel
+                imgData.data[idx + 3] = 255; // Alpha channel
+            }
+        }
+        return imgData;
+    }
+</script>

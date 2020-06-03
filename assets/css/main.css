@@ -2035,6 +2035,8 @@ ul.social li a.fa-google-plus:hover {
     border-bottom: solid 1px #ccc;
     padding: 5em 0 4em 0;
     text-align: center;
+    background: url("../../images/rule.svg") left top no-repeat;
+    background-color: #fff;
 }
 
 #header h1 {
@@ -2627,6 +2629,19 @@ ul.social li a.fa-google-plus:hover {
         -ms-transform: translateX(0);
         transform: translateX(0);
     }
+
+    /* search */
+    .row .col-12-medium-search {
+        order: -1;
+    }
+
+    .row .col-12-medium-search #blogType, .row .col-12-medium-search #blogDescribe {
+        text-align: center;
+    }
+
+    .row .col-12-medium-search .image {
+        display: none;
+    }
 }
 
 /* Small */
@@ -2719,7 +2734,7 @@ ul.social li a.fa-google-plus:hover {
 
     /* Dates */
     ul.dates li {
-        padding-left: 6em;
+        padding: 1.3em 0 1.3em 7.5em;
     }
 
     ul.dates h3 {
@@ -2815,4 +2830,15 @@ ul.social li a.fa-google-plus:hover {
     }
 }
 
-/*# sourceMappingURL=style.css.map */
+/* new */
+#searchName {
+    width: calc(100% - 90px);
+}
+
+.searchBtn {
+    width: 85px;
+    padding: 0.15rem 0.75rem;
+    float: right;
+}
+
+/*# sourceMappingURL=main.css.map */

@@ -844,6 +844,8 @@
 		border-bottom: solid 1px #ccc;
 		padding: 5em 0 4em 0;
 		text-align: center;
+		background: url("../../images/rule.svg") left top no-repeat;
+		background-color: #fff;
 
 		h1 {
 			color: #252122;
@@ -1456,6 +1458,21 @@
 					}
 				}
 			}
+		/* search */
+
+			.row {
+				.col-12-medium-search{
+					order: -1;
+
+					#blogType,#blogDescribe{
+						text-align: center;
+					}
+
+					.image{
+						display: none;
+					}
+				}
+			}
 
 	}
 
@@ -1572,7 +1589,8 @@
 
 			ul.dates {
 				li {
-					padding-left: 6em;
+					//padding-left: 6em;
+					padding: 1.3em 0 1.3em 7.5em;
 				}
 
 				h3 {
@@ -1682,4 +1700,16 @@
 				padding: 40px 0 20px 0;
 			}
 
+	}
+
+/* new */
+
+	#searchName{
+		width: calc(100% - 90px);
+	}
+
+	.searchBtn{
+		width: 85px;
+		padding: 0.15rem 0.75rem;
+		float: right;
 	}
