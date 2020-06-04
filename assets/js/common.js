@@ -64,12 +64,19 @@ var router = (hash)=>{
                 }
             });
             break;
-        case 'canvas' :
-            $('#main').load('html/canvas.html',function(responseTxt,statusTxt,xhr){
-                if(statusTxt=='success'){
-                    $("#banner").hide();
-                }
-            });
+        case 'interestingLab' :
+            var type =  $.getQueryParam('type') || "";
+            if (type == "canvas" || type == "sheep"){
+                $('#main').load('html/'+type+'.html',function(responseTxt,statusTxt,xhr){
+                    if(statusTxt=='success'){
+                        // $("#banner").hide();
+                    }
+                });
+            }else if (type == "dog"){
+                var html = '<div class="container"><iframe src="html/dog.html" frameborder="0" width="100%" height="600px" scrolling="no"></iframe></div>';
+                $('#main').html(html);
+            }
+            $("#banner").hide();
             break;
         default :
             $('#main').load('html/indexMain.html',function(responseTxt,statusTxt,xhr){

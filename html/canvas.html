@@ -10,6 +10,9 @@
         margin: 20px auto;
         width: 800px;
     }
+    .filter-btn{
+        margin: 5px;
+    }
 </style>
 <div id="app">
     <canvas id="my-canvas"></canvas>
@@ -18,19 +21,18 @@
     <canvas id="off-canvas" style="display: none;"></canvas>
 </div>
 <div style="text-align: center">
-    <button class="filter-btn button icon solid fa-image" id="gaussBlur">高斯模糊</button>&nbsp;
-    <button class="filter-btn button icon solid fa-image" id="negative">负片</button>&nbsp;
-    <button class="filter-btn button icon solid fa-image" id="decolor">去色</button>&nbsp;
-    <button class="filter-btn button icon solid fa-image" id="printmaking">中国版画</button>&nbsp;
-    <button class="filter-btn button icon solid fa-image" id="monochrome">单色</button>&nbsp;
-    <button class="filter-btn button icon solid fa-image" id="emboss">浮雕</button>&nbsp;
+    <button class="filter-btn button icon solid fa-image" id="gaussBlur">高斯模糊</button>
+    <button class="filter-btn button icon solid fa-image" id="negative">负片</button>
+    <button class="filter-btn button icon solid fa-image" id="decolor">去色</button>
+    <button class="filter-btn button icon solid fa-image" id="printmaking">中国版画</button>
+    <button class="filter-btn button icon solid fa-image" id="monochrome">单色</button>
+    <button class="filter-btn button icon solid fa-image" id="emboss">浮雕</button>
 </div>
 <script type="text/javascript">
     var isMouseDown = false, scale = 1.0;
     var canvas = document.querySelector("#my-canvas");
     var watermarkCanvas = document.querySelector("#watermark-canvas");
     var offCanvas = document.querySelector("#off-canvas");
-    var filterBtn = document.querySelector(".filter-btn");
     var slider = document.querySelector("input");
     // var scale = slider.value;
     var ctx = canvas.getContext("2d");
@@ -53,8 +55,13 @@
         drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
         offCtx.drawImage(img, 0, 0, canvas.width, canvas.height);
     };
-    // 监听input标签的mousemove事件 // 注意：mousemove实时监听值的变化，内存消耗较大
+    // 监听input标签的mousemove事件
+    // 注意：mousemove实时监听值的变化，内存消耗较大
     slider.onmousemove = function () {
+        scale = slider.value;
+        drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
+    };
+    slider.ontouchmove = function () {
         scale = slider.value;
         drawImageByScale(canvas, ctx, img, scale, watermarkCanvas);
     };
@@ -88,6 +95,42 @@
     };
     // 鼠标移出canvas标签
     canvas.onmouseout = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        isMouseDown = false;
+        drawCanvasWithMagnifier(false);
+        // 不绘制离屏放大镜
+    };
+
+    // 鼠标按下
+    canvas.ontouchstart = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        var point = windowToCanvas(event.clientX, event.clientY);
+        // 获取鼠标相对于 canvas 标签的坐标
+        isMouseDown = true;
+        drawCanvasWithMagnifier(true, point);
+        // 绘制在离屏canvas上绘制放大后的图像
+    };
+    // 鼠标移动
+    canvas.ontouchmove = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        if (isMouseDown === true) {
+            var point = windowToCanvas(event.clientX, event.clientY);
+            drawCanvasWithMagnifier(true, point);
+        }
+    };
+    // 鼠标松开
+    canvas.ontouchend = function (event) {
+        event.preventDefault();
+        // 禁用默认事件
+        isMouseDown = false;
+        drawCanvasWithMagnifier(false);
+        // 不绘制离屏放大镜
+    };
+    // 鼠标移出canvas标签
+    canvas.ontouchcancel = function (event) {
         event.preventDefault();
         // 禁用默认事件
         isMouseDown = false;
