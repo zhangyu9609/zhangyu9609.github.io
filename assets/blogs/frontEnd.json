@@ -4,6 +4,14 @@
   "describe": "前端技术笔记",
   "articles": [
     {
+      "title": "浅拷贝和深拷贝",
+      "id": "2020-07-17-001",
+      "createDate": "2020-07-17",
+      "openWay": "md",
+      "fileUrl": "assets/blogs/2020-07-17-001.md",
+      "describe": "举个栗子：假设B复制了A，当修改A时，看B是否会发生变化，如果B也跟着变了，说明这是浅拷贝，拿人手短，如果B没变，那就是深拷贝，自食其力"
+    },
+    {
       "title": "HTML5 Canvas：绘制图形",
       "id": "2020-05-29-003",
       "createDate": "2020-05-29",
