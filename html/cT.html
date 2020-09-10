@@ -1,0 +1,59 @@
+<meta charset="utf-8" />
+<script src="Concurrent.Thread.js"></script>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+
+<div id="test">
+    hellow word!
+</div>
+<script>
+    console.log( getNowFormatDate() + "正常程序开头");
+    var a = 0;
+
+    Concurrent.Thread.create(function(){
+        console.log(getNowFormatDate() + "线程1开始");
+        while(true)
+        {
+            //console.log(a);
+            if(a > 99999)
+            {
+                break;
+            }
+        }
+        console.log(getNowFormatDate() + "线程1结束");
+    });
+
+    Concurrent.Thread.create(function(){
+        console.log(getNowFormatDate() + "线程2开始");
+        for(var i = 0;i < 1000000;i++){
+            a += 1;
+            if(a == 99999){
+                console.log("a："+a);
+            }
+            if(a == 99999+1){
+                console.log("a："+a);
+            }
+        }
+        console.log(getNowFormatDate() + "线程2结束");
+    });
+    console.log(getNowFormatDate() + "正常程序结尾");
+
+
+
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+</script>

@@ -10,6 +10,7 @@ const wss = new WebSocket.Server({ port: PORT }); // 声明wss对象
  */
 wss.broadcastToElse = function broadcast(data, ws) {
     wss.clients.forEach(function each(client) {
+        console.log(client);
         if (client !== ws && client.readyState === WebSocket.OPEN) {
             client.send(data);
         }
@@ -20,6 +21,7 @@ wss.broadcastToElse = function broadcast(data, ws) {
 wss.on("connection", function connection(ws, req) {
     let ip = req.connection.remoteAddress; // 通过req对象可以获得客户端信息，比如：ip，headers等
     console.log("用户+1");
+    console.log(req.connection);
     /* 客户端发送消息，触发 message */
     ws.on("message", function incoming(message) {
         ws.send(message); // 向客户端发送消息

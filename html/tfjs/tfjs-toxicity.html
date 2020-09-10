@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>toxicity</title>
+</head>
+<body>
+<input type="text" id="toxicityInput">
+<button onclick="checkStatements()">分析</button>
+<br>
+<input id="result"/>
+</body>
+<!--<script src="https://unpkg.com/@tensorflow/tfjs"></script>-->
+<script src="tf.js"></script>
+<!--<script src="https://unpkg.com/@tensorflow-models/toxicity"></script>-->
+<script src="toxicity.min.js"></script>
+<script type="text/javascript">
+
+    const threshold = 0.9;
+    let sentences;
+    let model = "";
+    const main = async()=>{
+        sentences = document.getElementById('toxicityInput').value;
+        if (model == ""){
+            model = await toxicity.load(threshold);
+        }
+        const predictions = await model.classify(sentences);
+        console.log(predictions);
+        let result = [];
+        predictions.forEach(function (i,index) {
+            if (i.results[0].match) {
+                result.push(i.label);
+            }
+        });
+        document.getElementById('result').value = result.join(',');
+    };
+    // main();
+    
+    function checkStatements() {
+        main();
+    }
+
+</script>
+</html>

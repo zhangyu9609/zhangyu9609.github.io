@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>JavaScript多线程</title>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <style type="text/css">
+    div {
+        width: 100px;
+        height: 100px;
+        cursor: pointer;
+        background: orange;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="test">
+        测试点击
+    </div>
+
+    <script type="text/javascript">
+    $('#test').click(function() {
+        alert(1);
+    });
+
+    var worker = new Worker("task.js");
+    worker.onmessage = function(event) {
+        // 消息文本放置在data属性中，
+        // oBox.innerHTML = event.data;
+        alert(event.data);
+    };
+    worker.postMessage({val:5000000000 , index:1});
+    // worker.postMessage({val:500 , index:2});
+    // worker.postMessage({val:500 , index:3});
+    </script>
+</body>
+
+</html>

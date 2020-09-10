@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>posenet</title>
+    <style>
+        body{
+            position: relative;
+        }
+        #person,#test,#video{
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<img id="person" src="20200901170111.png" alt="">
+<!--<video id="video" src="test.mp4" controls="controls" autoplay="autoplay" muted></video>-->
+<!--<canvas id="test" width="426" height="240"></canvas>-->
+<canvas id="test" width="210" height="298"></canvas>
+</body>
+<!--<script src="https://unpkg.com/@tensorflow/tfjs"></script>-->
+<script src="tf.js"></script>
+<!--<script src="https://unpkg.com/@tensorflow-models/posenet"></script>-->
+<script src="posenet.min.js"></script>
+<script type="text/javascript">
+
+    const imageScaleFactor = 0.50;
+    const flipHorizontal = false;
+    const outputStride = 16;
+    const imageElement = document.getElementById('person');
+
+    var mCanvas = document.getElementById("test");
+    var cxt = mCanvas.getContext("2d");
+
+    const main = async()=>{
+        const net = await posenet.load();
+        const pose = await net.estimateSinglePose(imageElement, imageScaleFactor, flipHorizontal, outputStride);
+        // console.log(pose);
+        cxt.clearRect(0, 0, imageElement.width, imageElement.height);
+        cxt.width = imageElement.width;
+        cxt.height = imageElement.height;
+        cxt.drawImage(imageElement, 0, 0, imageElement.width, imageElement.height);
+        pose["keypoints"].forEach(function (i) {
+            cxt.fillStyle = "red";
+            cxt.beginPath();
+            cxt.arc(i.position.x, i.position.y, 2, 0,360,false);
+            cxt.closePath();
+            cxt.fill();
+        })
+    };
+    main();
+
+</script>
+</html>
